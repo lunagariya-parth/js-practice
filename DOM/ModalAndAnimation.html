@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modal with Animation</title>
+  <style>
+    #modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <button onclick="openModal()">Open Modal</button>
+
+  <div id="modal">
+    <p>This is a modal!</p>
+    <button onclick="closeModal()">Close Modal</button>
+  </div>
+
+  <script>
+    function openModal() {
+      const modal = document.getElementById('modal');
+      modal.style.display = 'block';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('modal');
+      modal.style.animation = 'fadeOut 0.5s ease-in-out';
+      modal.addEventListener('animationend', () => {
+        modal.style.display = 'none';
+        modal.style.animation = ''; // Reset animation
+      });
+    }
+  </script>
+</body>
+</html>

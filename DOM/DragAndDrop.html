@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drag and Drop</title>
+  <style>
+    .draggable {
+      cursor: grab;
+      user-select: none;
+    }
+
+    .drop-area {
+      width: 300px;
+      height: 300px;
+      border: 2px dashed #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="draggable" draggable="true">Drag me!</div>
+  <div class="drop-area">Drop here</div>
+
+  <script>
+    const draggableElement = document.querySelector('.draggable');
+    const dropArea = document.querySelector('.drop-area');
+
+    draggableElement.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/plain', 'Dragged Element');
+    });
+
+    dropArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+
+    dropArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      const data = e.dataTransfer.getData('text/plain');
+      dropArea.textContent = `Dropped: ${data}`;
+    });
+  </script>
+</body>
+</html>
+

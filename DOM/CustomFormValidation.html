@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Form Validation</title>
+  <style>
+    .error-message {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <form id="customForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+    <div id="usernameError" class="error-message"></div>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <div id="emailError" class="error-message"></div>
+
+    <button type="button" onclick="validateForm()">Submit</button>
+  </form>
+
+  <script>
+    function validateForm() {
+      const username = document.getElementById('username').value;
+      const email = document.getElementById('email').value;
+      const usernameError = document.getElementById('usernameError');
+      const emailError = document.getElementById('emailError');
+
+      // Custom validation rules
+      if (username.length < 3) {
+        usernameError.textContent = 'Username must be at least 3 characters long.';
+      } else {
+        usernameError.textContent = '';
+      }
+
+      if (!email.includes('@')) {
+        emailError.textContent = 'Invalid email address.';
+      } else {
+        emailError.textContent = '';
+      }
+    }
+  </script>
+</body>
+</html>

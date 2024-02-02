@@ -1,0 +1,39 @@
+<!-- You'll need a server or an API to fetch data. For simplicity, this example uses an array. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infinite Scroll</title>
+  <style>
+    #content {
+      height: 2000px; /* Simulating a long page */
+    }
+  </style>
+</head>
+<body>
+  <div id="content"></div>
+
+  <script>
+    const content = document.getElementById('content');
+
+    function fetchData() {
+      // Fetch data from an API or array
+      const newData = ['Item 1', 'Item 2', 'Item 3'];
+      newData.forEach(item => {
+        const newItem = document.createElement('div');
+        newItem.textContent = item;
+        content.appendChild(newItem);
+      });
+    }
+
+    fetchData(); // Initial data load
+
+    document.addEventListener('scroll', () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        fetchData(); // Load more data when reaching the bottom
+      }
+    });
+  </script>
+</body>
+</html>
