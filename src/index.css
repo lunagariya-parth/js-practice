@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+button {
+  @apply p-2 border rounded bg-black text-white cursor-pointer h-10 disabled:opacity-40 disabled:cursor-not-allowed;
+}
+input {
+  @apply p-2 border rounded h-10;
+}
+input[type="radio"],
+input[type="checkbox"] {
+  @apply w-4;
+}
+select {
+  @apply border p-2 rounded;
+}
