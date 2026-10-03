@@ -49,7 +49,11 @@ export default function Tenzi() {
   return (
     <div className="flex flex-col gap-4 max-w-100 border rounded mx-auto p-4 lg:p-6">
       {gameStatus === "finished" && <ReactConfetti />}
-      <HeaderText />
+      <HeaderText
+        title="Tenzies"
+        subTitle=" Roll dice until all dice are the same.Click each dice to freeze it at its current value
+        between rolls."
+      />
       <TenziDicies dice={dice} lockDice={LockDice} gameStatus={gameStatus} />
       {gameStatus === "finished" ? (
         <>

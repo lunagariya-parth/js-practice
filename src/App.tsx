@@ -1,4 +1,4 @@
-import Tenzi from "./tenzi/Tenzi";
+import Wordle from "./wordle/Wordle";
 
 function App() {
   return (
@@ -7,8 +7,9 @@ function App() {
       <NotificationChallenge />
       <PageForForm />
       <PageForUseState /> 
-      <MemeGenerator />*/}
-      <Tenzi />
+      <MemeGenerator />
+      <Tenzi />*/}
+      <Wordle />
     </main>
   );
 }
