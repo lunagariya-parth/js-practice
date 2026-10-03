@@ -66,6 +66,18 @@ export default function ClaudeChef() {
       {recipe && !error && (
         <div className="border rounded p-2 space-y-1.5">
           <h2>Recipe Name: {recipe.title}</h2>
+          <p>Ingredients List:</p>
+          {recipe.ingredients.length > 0 && (
+            <div className="rounded p-2">
+              <ol className="list-decimal ps-4">
+                {recipe.ingredients.map((i) => (
+                  <li key={i} className="text-wrap">
+                    {i}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
           <p>Follow Steps:</p>
           {recipe.steps.length > 0 && (
             <div className="rounded p-2">

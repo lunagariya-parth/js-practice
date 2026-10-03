@@ -34,7 +34,6 @@ export default function MemeGenerator() {
       text0: String(formData.get("topText") ?? ""),
       text1: String(formData.get("bottomText") ?? ""),
     });
-    console.log(body);
     fetch(MEME_WITH_CAPTION_ENDPOINT, {
       method: "POST",
       headers: {

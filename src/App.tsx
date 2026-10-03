@@ -1,8 +1,4 @@
-import ClaudeChef from "./chef/ClaudeChef";
-import MemeGenerator from "./MemeGenerator";
-import NotificationChallenge from "./NotificationChallenge";
-import PageForForm from "./PageForForm";
-import PageForUseState from "./PageForUseState";
+import Tenzi from "./tenzi/Tenzi";
 
 function App() {
   return (
@@ -10,8 +6,9 @@ function App() {
       {/* <ClaudeChef />
       <NotificationChallenge />
       <PageForForm />
-      <PageForUseState /> */}
-      <MemeGenerator/>
+      <PageForUseState /> 
+      <MemeGenerator />*/}
+      <Tenzi />
     </main>
   );
 }
