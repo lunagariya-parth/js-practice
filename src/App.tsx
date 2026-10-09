@@ -1,4 +1,4 @@
-import Wordle from "./wordle/Wordle";
+import MultiStepFormPage from "./multi-step-form";
 
 function App() {
   return (
@@ -8,8 +8,11 @@ function App() {
       <PageForForm />
       <PageForUseState /> 
       <MemeGenerator />
-      <Tenzi />*/}
-      <Wordle />
+      <Tenzi />
+      <Wordle />*/}
+      {/* <UserContextPage /> */}
+      {/* <CounterReducerPage /> */}
+      <MultiStepFormPage />
     </main>
   );
 }

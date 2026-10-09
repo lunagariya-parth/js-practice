@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 
+type TMeme = { id: string; url: string; name?: string };
+
 export default function MemeGenerator() {
   const MEME_ENDPOINT = import.meta.env.VITE_MEME_ENDPOINT;
   const MEME_WITH_CAPTION_ENDPOINT = import.meta.env.VITE_MEME_WITH_CAPTION_ENDPOINT;
   const MEME_API = import.meta.env.VITE_IMGFLIP_KEY;
-  const [data, setData] = useState([]);
-  const [meme, setMeme] = useState();
+  const [data, setData] = useState<TMeme[]>([]);
+  const [meme, setMeme] = useState<TMeme>();
   useEffect(() => {
     fetch(MEME_ENDPOINT, {
       method: "GET",
@@ -21,7 +23,7 @@ export default function MemeGenerator() {
         setMeme(data.data.memes[0]);
       })
       .catch((error) => console.error("Fetch error:", error));
-  }, []);
+  }, [MEME_ENDPOINT]);
 
   function shuffleMeme() {
     const id = Math.ceil(Math.random() * data.length);
