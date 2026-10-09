@@ -1,28 +1,25 @@
-import { useContext, type MouseEvent } from "react";
+import { type MouseEvent } from "react";
 import StepHeader from "./StepHeader";
-import { FormContext } from "./formContext";
+import useFormContext from "./formContext";
 
 export default function PersonalStep() {
-  const form = useContext(FormContext);
+  const form = useFormContext();
   console.log("rwnder");
   function submit(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-    if (form) {
-      const errors: Record<string, string> = {};
 
-      if (form.state.data.personal.name.trim() == "") errors.name = "name is required";
-      if (form.state.data.personal.email.trim() == "") errors.email = "email is required";
-      if (form.state.data.personal.phone.trim() == "") errors.phone = "phone is required";
+    const errors: Record<string, string> = {};
 
-      form.dispatch({ type: "SET_ERRORS", errors });
+    if (form.state.data.personal.name.trim() == "") errors.name = "name is required";
+    if (form.state.data.personal.email.trim() == "") errors.email = "email is required";
+    if (form.state.data.personal.phone.trim() == "") errors.phone = "phone is required";
 
-      if (Object.keys(errors).length == 0) {
-        form.dispatch({ type: "NEXT" });
-        form.dispatch({ type: "SET_COMPLETEDSTEPS", steps: [0] });
-      }
+    form.dispatch({ type: "SET_ERRORS", errors });
+
+    if (Object.keys(errors).length == 0) {
+      form.dispatch({ type: "NEXT" });
+      form.dispatch({ type: "SET_COMPLETEDSTEPS", steps: [0] });
     }
-
-    return;
   }
   return (
     <form className="flex flex-col gap-3 rounded border w-80 mx-auto p-4" noValidate>
@@ -35,9 +32,9 @@ export default function PersonalStep() {
         <input
           className="border rounded p-1"
           name="name"
-          value={form?.state.data.personal.name}
+          value={form.state.data.personal.name}
           onChange={(e) =>
-            form?.dispatch({
+            form.dispatch({
               type: "UPDATE_FIELD",
               section: "personal",
               field: "name",
@@ -45,7 +42,7 @@ export default function PersonalStep() {
             })
           }
         />
-        {form?.state.errors.name && (
+        {form.state.errors.name && (
           <span className="text-red-500 text-sm">{form.state.errors.name}</span>
         )}
       </label>
@@ -56,9 +53,9 @@ export default function PersonalStep() {
           type="email"
           className="border rounded p-1"
           name="email"
-          value={form?.state.data.personal.email}
+          value={form.state.data.personal.email}
           onChange={(e) =>
-            form?.dispatch({
+            form.dispatch({
               type: "UPDATE_FIELD",
               section: "personal",
               field: "email",
@@ -66,7 +63,7 @@ export default function PersonalStep() {
             })
           }
         />
-        {form?.state.errors.email && (
+        {form.state.errors.email && (
           <span className="text-red-500 text-sm">{form.state.errors.email}</span>
         )}
       </label>
@@ -77,9 +74,9 @@ export default function PersonalStep() {
           type="tel"
           className="border rounded p-1"
           name="phone"
-          value={form?.state.data.personal.phone}
+          value={form.state.data.personal.phone}
           onChange={(e) =>
-            form?.dispatch({
+            form.dispatch({
               type: "UPDATE_FIELD",
               section: "personal",
               field: "phone",
@@ -87,7 +84,7 @@ export default function PersonalStep() {
             })
           }
         />
-        {form?.state.errors.phone && (
+        {form.state.errors.phone && (
           <span className="text-red-500 text-sm">{form.state.errors.phone}</span>
         )}
       </label>

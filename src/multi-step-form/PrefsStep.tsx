@@ -1,34 +1,30 @@
-import { useContext, type MouseEvent } from "react";
+import { type MouseEvent } from "react";
 import StepHeader from "./StepHeader";
-import { FormContext } from "./formContext";
+import useFormContext from "./formContext";
 
 const PLANS = ["free", "pro", "team"] as const;
 const INTERESTS = ["react", "typescript", "node", "design", "devops"];
 
 export default function PrefsStep() {
-  const form = useContext(FormContext);
+  const form = useFormContext();
   function submit(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-    if (form) {
-      const errors: Record<string, string> = {};
 
-      if (form.state.data.prefs.plan == "") errors.plan = "select your plan ";
+    const errors: Record<string, string> = {};
 
-      if (form.state.data.prefs.interests.length == 0)
-        errors.interests = "select atleast 1 interest";
+    if (form.state.data.prefs.plan == "") errors.plan = "select your plan ";
 
-      form.dispatch({ type: "SET_ERRORS", errors });
+    if (form.state.data.prefs.interests.length == 0) errors.interests = "select atleast 1 interest";
 
-      if (Object.keys(errors).length == 0) {
-        form.dispatch({ type: "NEXT" });
-        form.dispatch({ type: "SET_COMPLETEDSTEPS", steps: [0, 1, 2] });
-      }
+    form.dispatch({ type: "SET_ERRORS", errors });
+
+    if (Object.keys(errors).length == 0) {
+      form.dispatch({ type: "NEXT" });
+      form.dispatch({ type: "SET_COMPLETEDSTEPS", steps: [0, 1, 2] });
     }
-
-    return;
   }
   function goBack() {
-    form?.dispatch({ type: "PREV" });
+    form.dispatch({ type: "PREV" });
   }
   return (
     <form className="flex flex-col gap-4 p-4 border rounded w-80 mx-auto">
@@ -40,9 +36,9 @@ export default function PrefsStep() {
         Plan
         <select
           className="border rounded p-1"
-          value={form?.state.data.prefs.plan}
+          value={form.state.data.prefs.plan}
           onChange={(e) =>
-            form?.dispatch({
+            form.dispatch({
               type: "UPDATE_FIELD",
               section: "prefs",
               field: "plan",
@@ -59,17 +55,17 @@ export default function PrefsStep() {
             </option>
           ))}
         </select>
-        {form?.state.errors.plan && (
-          <span className="text-red-500 text-sm">{form?.state.errors.plan}</span>
+        {form.state.errors.plan && (
+          <span className="text-red-500 text-sm">{form.state.errors.plan}</span>
         )}
       </label>
 
       <label className="flex items-center gap-2" htmlFor="newsLetter">
         <input
           type="checkbox"
-          checked={form?.state.data.prefs.newsletter}
+          checked={form.state.data.prefs.newsletter}
           onChange={(e) =>
-            form?.dispatch({
+            form.dispatch({
               type: "UPDATE_FIELD",
               section: "prefs",
               field: "newsletter",
@@ -95,14 +91,14 @@ export default function PrefsStep() {
               id={`interest-${interest}`}
               name="interests"
               value={interest}
-              checked={form?.state.data.prefs.interests.includes(interest)}
-              onChange={() => form?.dispatch({ type: "TOGGLE_INTEREST", interest })}
+              checked={form.state.data.prefs.interests.includes(interest)}
+              onChange={() => form.dispatch({ type: "TOGGLE_INTEREST", interest })}
             />
             {interest}
           </label>
         ))}
-        {form?.state.errors.interests && (
-          <span className="text-red-500 text-sm">{form?.state.errors.interests}</span>
+        {form.state.errors.interests && (
+          <span className="text-red-500 text-sm">{form.state.errors.interests}</span>
         )}
       </fieldset>
       <div className="flex justify-between gap-2 flex-wrap">

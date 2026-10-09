@@ -1,31 +1,28 @@
-import { useContext, type MouseEvent } from "react";
+import { type MouseEvent } from "react";
 import StepHeader from "./StepHeader";
-import { FormContext } from "./formContext";
+import useFormContext from "./formContext";
 
 export default function AddressStep() {
-  const form = useContext(FormContext);
+  const form = useFormContext();
   function submit(e: MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
-    if (form) {
-      const errors: Record<string, string> = {};
 
-      if (form.state.data.address.street.trim() == "") errors.street = "street is required";
-      if (form.state.data.address.city.trim() == "") errors.city = "city is required";
-      if (form.state.data.address.postal.trim() == "") errors.postal = "postal code is required";
-      if (form.state.data.address.country.trim() == "") errors.country = "country code is required";
+    const errors: Record<string, string> = {};
 
-      form.dispatch({ type: "SET_ERRORS", errors });
+    if (form.state.data.address.street.trim() == "") errors.street = "street is required";
+    if (form.state.data.address.city.trim() == "") errors.city = "city is required";
+    if (form.state.data.address.postal.trim() == "") errors.postal = "postal code is required";
+    if (form.state.data.address.country.trim() == "") errors.country = "country code is required";
 
-      if (Object.keys(errors).length == 0) {
-        form.dispatch({ type: "NEXT" });
-        form.dispatch({ type: "SET_COMPLETEDSTEPS", steps: [0, 1] });
-      }
+    form.dispatch({ type: "SET_ERRORS", errors });
+
+    if (Object.keys(errors).length == 0) {
+      form.dispatch({ type: "NEXT" });
+      form.dispatch({ type: "SET_COMPLETEDSTEPS", steps: [0, 1] });
     }
-
-    return;
   }
   function goBack() {
-    form?.dispatch({ type: "PREV" });
+    form.dispatch({ type: "PREV" });
   }
   return (
     <form className="flex flex-col gap-3 p-4 border rounded w-80 mx-auto">
@@ -37,11 +34,11 @@ export default function AddressStep() {
         Street
         <input
           className="border rounded p-1"
-          value={form?.state.data.address.street}
+          value={form.state.data.address.street}
           name="street"
           id="street"
           onChange={(e) =>
-            form?.dispatch({
+            form.dispatch({
               type: "UPDATE_FIELD",
               section: "address",
               field: "street",
@@ -49,8 +46,8 @@ export default function AddressStep() {
             })
           }
         />
-        {form?.state.errors.street && (
-          <span className="text-red-500 text-sm">{form?.state.errors.street}</span>
+        {form.state.errors.street && (
+          <span className="text-red-500 text-sm">{form.state.errors.street}</span>
         )}
       </label>
 
@@ -58,11 +55,11 @@ export default function AddressStep() {
         City
         <input
           className="border rounded p-1"
-          value={form?.state.data.address.city}
+          value={form.state.data.address.city}
           id="city"
           name="city"
           onChange={(e) =>
-            form?.dispatch({
+            form.dispatch({
               type: "UPDATE_FIELD",
               section: "address",
               field: "city",
@@ -70,8 +67,8 @@ export default function AddressStep() {
             })
           }
         />
-        {form?.state.errors.city && (
-          <span className="text-red-500 text-sm">{form?.state.errors.city}</span>
+        {form.state.errors.city && (
+          <span className="text-red-500 text-sm">{form.state.errors.city}</span>
         )}
       </label>
 
@@ -79,11 +76,11 @@ export default function AddressStep() {
         Postal code
         <input
           className="border rounded p-1"
-          value={form?.state.data.address.postal}
+          value={form.state.data.address.postal}
           id="postalCode"
           name="postalCode"
           onChange={(e) =>
-            form?.dispatch({
+            form.dispatch({
               type: "UPDATE_FIELD",
               section: "address",
               field: "postal",
@@ -91,8 +88,8 @@ export default function AddressStep() {
             })
           }
         />
-        {form?.state.errors.postal && (
-          <span className="text-red-500 text-sm">{form?.state.errors.postal}</span>
+        {form.state.errors.postal && (
+          <span className="text-red-500 text-sm">{form.state.errors.postal}</span>
         )}
       </label>
 
@@ -100,11 +97,11 @@ export default function AddressStep() {
         Country
         <input
           className="border rounded p-1"
-          value={form?.state.data.address.country}
+          value={form.state.data.address.country}
           id="country"
           name="country"
           onChange={(e) =>
-            form?.dispatch({
+            form.dispatch({
               type: "UPDATE_FIELD",
               section: "address",
               field: "country",
@@ -112,8 +109,8 @@ export default function AddressStep() {
             })
           }
         />
-        {form?.state.errors.country && (
-          <span className="text-red-500 text-sm">{form?.state.errors.country}</span>
+        {form.state.errors.country && (
+          <span className="text-red-500 text-sm">{form.state.errors.country}</span>
         )}
       </label>
       <div className="flex justify-between gap-2 flex-wrap">
