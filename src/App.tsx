@@ -1,4 +1,4 @@
-import KanbanPage from "./kanban";
+import MultiStepFormPageState from "./multi-step-form/state";
 
 function App() {
   return (
@@ -12,8 +12,8 @@ function App() {
       <Wordle />*/}
       {/* <UserContextPage /> */}
       {/* <CounterReducerPage /> */}
-      {/* <MultiStepFormPage /> */}
-      <KanbanPage />
+      <MultiStepFormPageState />
+      {/* <KanbanPage /> */}
     </main>
   );
 }
