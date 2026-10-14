@@ -7,6 +7,7 @@ const INTERESTS = ["react", "typescript", "node", "design", "devops"];
 
 export default function PrefsStep() {
   const form = useFormContext();
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [plan, setPlan] = useState<(typeof PLANS)[number] | "">(form.state.data.prefs.plan);
   const [interests, setInterests] = useState<string[]>(form.state.data.prefs.interests);
   const [newsletter, setNewsletter] = useState<boolean>(form.state.data.prefs.newsletter);
@@ -24,11 +25,12 @@ export default function PrefsStep() {
       field: "interests",
       value: interests as never,
     });
-    const errors: Record<string, string> = {};
-    if (!plan) errors.plan = "plan is required";
-    if (interests.length === 0) errors.interests = "pick at least one interest";
-    form.dispatch({ type: "SET_ERRORS", errors });
-    if (Object.keys(errors).length === 0) form.dispatch({ type: "NEXT" });
+
+    const newErrors: Record<string, string> = {};
+    if (!plan) newErrors.plan = "plan is required";
+    if (interests.length === 0) newErrors.interests = "pick at least one interest";
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length === 0) form.dispatch({ type: "NEXT" });
   }
   function onFieldChange(
     field: string,
@@ -40,11 +42,16 @@ export default function PrefsStep() {
       newsletter: setNewsletter,
     } as Record<string, (v: typeof value) => void>;
     setters[field](value);
-    const errors = { ...form.state.errors };
-    delete errors[field];
-    const isEmpty = typeof value === "string" ? value.trim() === "" : Array.isArray(value) && value.length === 0;
-    if (isEmpty) errors[field] = `${field} is required`;
-    form.dispatch({ type: "SET_ERRORS", errors });
+    if (
+      errors[field] &&
+      (typeof value === "string" ? value.trim() !== "" : Array.isArray(value) && value.length > 0)
+    ) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
   }
   function goBack() {
     form.dispatch({ type: "PREV" });
@@ -71,9 +78,7 @@ export default function PrefsStep() {
             </option>
           ))}
         </select>
-        {form.state.errors.plan && (
-          <span className="text-red-500 text-sm">{form.state.errors.plan}</span>
-        )}
+        {errors.plan && <span className="text-red-500 text-sm">{errors.plan}</span>}
       </label>
 
       <label className="flex items-center gap-2" htmlFor="newsLetter">
@@ -113,9 +118,7 @@ export default function PrefsStep() {
             {interest}
           </label>
         ))}
-        {form.state.errors.interests && (
-          <span className="text-red-500 text-sm">{form.state.errors.interests}</span>
-        )}
+        {errors.interests && <span className="text-red-500 text-sm">{errors.interests}</span>}
       </fieldset>
       <div className="flex justify-between gap-2 flex-wrap">
         <button type="button" onClick={goBack}>

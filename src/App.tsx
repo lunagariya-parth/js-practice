@@ -1,4 +1,4 @@
-import MultiStepFormPageState from "./multi-step-form/state";
+import TicketForm from "./ticket-form-with-rhf";
 
 function App() {
   return (
@@ -12,8 +12,9 @@ function App() {
       <Wordle />*/}
       {/* <UserContextPage /> */}
       {/* <CounterReducerPage /> */}
-      <MultiStepFormPageState />
+      {/* <MultiStepFormPageState /> */}
       {/* <KanbanPage /> */}
+      <TicketForm />
     </main>
   );
 }

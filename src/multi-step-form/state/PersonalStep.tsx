@@ -4,6 +4,7 @@ import useFormContext from "../formContext";
 
 export default function PersonalStep() {
   const form = useFormContext();
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [name, setName] = useState<string>(form.state.data.personal.name);
   const [email, setEmail] = useState<string>(form.state.data.personal.email);
   const [phone, setPhone] = useState<string>(form.state.data.personal.phone);
@@ -15,12 +16,6 @@ export default function PersonalStep() {
       phone: phone,
     };
 
-    const errors: Record<string, string> = {};
-    for (const [field, value] of Object.entries(values)) {
-      if (value.trim() === "") errors[field] = `${field} is required`;
-    }
-
-    form.dispatch({ type: "SET_ERRORS", errors });
     if (Object.keys(errors).length > 0) return;
 
     for (const [field, value] of Object.entries(values)) {
@@ -35,12 +30,13 @@ export default function PersonalStep() {
       phone: setPhone,
     };
     setters[field](value);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { [field]: _, ...rest } = form.state.errors;
-    form.dispatch({
-      type: "SET_ERRORS",
-      errors: value.trim() == "" ? { ...rest, [field]: `${field} is required` } : rest,
-    });
+    if (errors[field] && value.trim() !== "") {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
   }
 
   return (
@@ -61,9 +57,7 @@ export default function PersonalStep() {
           value={name}
           onChange={(e) => onFieldChange("name", e.target.value)}
         />
-        {form.state.errors.name && (
-          <span className="text-red-500 text-sm">{form.state.errors.name}</span>
-        )}
+        {errors.name && <span className="text-red-500 text-sm">{errors.name}</span>}
       </label>
 
       <label className="flex flex-col gap-1">
@@ -75,9 +69,7 @@ export default function PersonalStep() {
           value={email}
           onChange={(e) => onFieldChange("email", e.target.value)}
         />
-        {form.state.errors.email && (
-          <span className="text-red-500 text-sm">{form.state.errors.email}</span>
-        )}
+        {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
       </label>
 
       <label className="flex flex-col gap-1">
@@ -89,9 +81,7 @@ export default function PersonalStep() {
           value={phone}
           onChange={(e) => onFieldChange("phone", e.target.value)}
         />
-        {form.state.errors.phone && (
-          <span className="text-red-500 text-sm">{form.state.errors.phone}</span>
-        )}
+        {errors.phone && <span className="text-red-500 text-sm">{errors.phone}</span>}
       </label>
 
       <button type="submit" className="w-fit">

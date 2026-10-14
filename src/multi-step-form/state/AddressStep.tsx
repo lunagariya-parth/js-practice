@@ -4,6 +4,7 @@ import useFormContext from "../formContext";
 
 export default function AddressStep() {
   const form = useFormContext();
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [street, setStreet] = useState(form.state.data.address.street);
   const [city, setCity] = useState(form.state.data.address.city);
   const [postal, setPostal] = useState(form.state.data.address.postal);
@@ -15,12 +16,7 @@ export default function AddressStep() {
       postal,
       country,
     };
-    const errors: Record<string, string> = {};
-    for (const [field, value] of Object.entries(values)) {
-      if (value.trim() === "") errors[field] = `${field} is required`;
-    }
-
-    form.dispatch({ type: "SET_ERRORS", errors });
+   
     if (Object.keys(errors).length > 0) return;
     for (const [field, value] of Object.entries(values)) {
       form.dispatch({ type: "UPDATE_FIELD", section: "address", field, value });
@@ -39,12 +35,13 @@ export default function AddressStep() {
       country: setCountry,
     };
     setters[field](value);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { [field]: _, ...rest } = form.state.errors;
-    form.dispatch({
-      type: "SET_ERRORS",
-      errors: value.trim() == "" ? { ...rest, [field]: `${field} is required` } : rest,
-    });
+    if (errors[field] && value.trim() !== "") {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
   }
   return (
     <form className="flex flex-col gap-3 p-4 border rounded w-80 mx-auto" action={submit}>
@@ -61,8 +58,8 @@ export default function AddressStep() {
           name="street"
           id="street"
         />
-        {form.state.errors.street && (
-          <span className="text-red-500 text-sm">{form.state.errors.street}</span>
+        {errors.street && (
+          <span className="text-red-500 text-sm">{errors.street}</span>
         )}
       </label>
 
@@ -75,8 +72,8 @@ export default function AddressStep() {
           name="city"
           onChange={(e) => onFieldChange("city", e.target.value)}
         />
-        {form.state.errors.city && (
-          <span className="text-red-500 text-sm">{form.state.errors.city}</span>
+        {errors.city && (
+          <span className="text-red-500 text-sm">{errors.city}</span>
         )}
       </label>
 
@@ -89,8 +86,8 @@ export default function AddressStep() {
           name="postalCode"
           onChange={(e) => onFieldChange("postal", e.target.value)}
         />
-        {form.state.errors.postal && (
-          <span className="text-red-500 text-sm">{form.state.errors.postal}</span>
+        {errors.postal && (
+          <span className="text-red-500 text-sm">{errors.postal}</span>
         )}
       </label>
 
@@ -103,8 +100,8 @@ export default function AddressStep() {
           name="country"
           onChange={(e) => onFieldChange("country", e.target.value)}
         />
-        {form.state.errors.country && (
-          <span className="text-red-500 text-sm">{form.state.errors.country}</span>
+        {errors.country && (
+          <span className="text-red-500 text-sm">{errors.country}</span>
         )}
       </label>
       <div className="flex justify-between gap-2 flex-wrap">
